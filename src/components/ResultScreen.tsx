@@ -1,9 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled, { css, keyframes } from 'styled-components';
 import type { LoveLanguage, QuizResult } from '../../quiz';
 import type { LoveLanguageData } from '../i18n/translations';
 import { useLanguage } from '../contexts/LanguageContext';
 import { Button } from './ui/Button';
+import { ShareCard } from './ShareCard';
+import { ShareButtonGroup } from './ShareButton';
+import { TipsForMe } from './TipsForMe';
+import { PartnerGuide } from './PartnerGuide';
 import {
   animation,
   borderRadius,
@@ -60,15 +64,15 @@ const Screen = styled.main`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: ${spacing[8]} ${spacing[4]} ${spacing[16]};
+  padding: calc(${spacing[8]} + 56px) ${spacing[4]} ${spacing[16]};
   background: var(--color-bg);
 
   ${mq.sm} {
-    padding: ${spacing[12]} ${spacing[6]} ${spacing[20]};
+    padding: calc(${spacing[12]} + 56px) ${spacing[6]} ${spacing[20]};
   }
 
   ${mq.md} {
-    padding: ${spacing[16]} ${spacing[8]};
+    padding: calc(${spacing[16]} + 56px) ${spacing[8]};
   }
 `;
 
@@ -250,63 +254,29 @@ const Description = styled.p`
   }
 `;
 
-const TipsSeparator = styled.div`
-  height: 1px;
-  background: ${colors.border};
-  margin: ${spacing[5]} 0;
-`;
-
-const TipsLabel = styled.h3`
-  font-family: ${typography.fonts.body};
-  font-size: ${typography.sizes.xs};
-  font-weight: ${typography.weights.semibold};
-  letter-spacing: ${typography.letterSpacing.widest};
-  text-transform: uppercase;
-  color: ${colors.cobalt};
-  margin-bottom: ${spacing[4]};
-`;
-
-const TipsList = styled.ol`
-  display: flex;
-  flex-direction: column;
-  gap: ${spacing[3]};
-  list-style: none;
-`;
-
-const TipItem = styled.li<{ $delay: number }>`
-  display: flex;
-  align-items: flex-start;
-  gap: ${spacing[3]};
-  animation: ${fadeSlideUp} 0.45s ${animation.easings.smooth} both;
-  animation-delay: ${({ $delay }) => $delay}s;
-`;
-
-const TipNumber = styled.span`
-  flex-shrink: 0;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  border: 1.5px solid ${colors.border};
+const SectionDivider = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
-  font-family: ${typography.fonts.body};
-  font-size: ${typography.sizes['2xs']};
-  font-weight: ${typography.weights.semibold};
-  color: ${colors.textMuted};
-  margin-top: 2px;
-  flex-shrink: 0;
+  gap: ${spacing[4]};
+  animation: ${fadeSlideUp} 0.5s ${animation.easings.smooth} 0.8s both;
+
+  &::before,
+  &::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: ${colors.border};
+  }
 `;
 
-const TipText = styled.p`
+const DividerText = styled.span`
   font-family: ${typography.fonts.body};
-  font-size: ${typography.sizes.sm};
-  color: ${colors.textSoft};
-  line-height: ${typography.lineHeights.relaxed};
-
-  ${mq.sm} {
-    font-size: ${typography.sizes.base};
-  }
+  font-size: ${typography.sizes.xs};
+  font-weight: ${typography.weights.medium};
+  letter-spacing: ${typography.letterSpacing.widest};
+  text-transform: uppercase;
+  color: ${colors.textMuted};
+  white-space: nowrap;
 `;
 
 const ChartSection = styled.section`
@@ -415,72 +385,56 @@ const ChartScore = styled.span<{ $isPrimary: boolean }>`
 
 const ActionsRow = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: ${spacing[3]};
-  animation: ${fadeSlideUp} 0.5s ${animation.easings.smooth} 0.85s both;
-
-  ${mq.sm} {
-    flex-direction: row;
-    justify-content: center;
-  }
+  justify-content: center;
+  animation: ${fadeSlideUp} 0.5s ${animation.easings.smooth} 1s both;
 `;
 
-const ShareButton = styled.button<{ $copied: boolean }>`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: ${spacing[2]};
-  padding: ${spacing[3]} ${spacing[8]};
-  border-radius: ${borderRadius.pill};
-  font-family: ${typography.fonts.body};
-  font-size: ${typography.sizes.sm};
-  font-weight: ${typography.weights.medium};
-  letter-spacing: ${typography.letterSpacing.widest};
-  text-transform: uppercase;
-  cursor: pointer;
-  min-height: 48px;
-  border: 2px solid ${({ $copied }) => ($copied ? colors.cherry : colors.cobalt)};
-  background: ${({ $copied }) => ($copied ? colors.cherryGhost : 'transparent')};
-  color: ${({ $copied }) => ($copied ? colors.cherry : colors.cobalt)};
-  transition:
-    border-color ${animation.transitions.normal},
-    background ${animation.transitions.normal},
-    color ${animation.transitions.normal},
-    transform ${animation.transitions.spring};
 
-  &:hover:not(:disabled) {
-    background: ${({ $copied }) => ($copied ? colors.cherryGhost : colors.cobaltGhost)};
-    transform: translateY(-2px);
-  }
+// ------------------------------------------------------------------
+// Share card containers
+// ------------------------------------------------------------------
 
-  &:active {
-    transform: translateY(0);
-  }
+/** Hidden at full 1080x1080 for html2canvas capture */
+const HiddenCapture = styled.div`
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  width: 1080px;
+  height: 1080px;
+  pointer-events: none;
+  user-select: none;
+`;
 
-  &:focus-visible {
-    outline: 2px solid ${colors.cobalt};
-    outline-offset: 3px;
-  }
+/** Visible scaled-down preview (~300px) */
+const CardPreviewOuter = styled.div`
+  width: 300px;
+  height: 300px;
+  overflow: hidden;
+  border-radius: 16px;
+  margin: 0 auto;
+  position: relative;
+  filter: drop-shadow(0 8px 32px rgba(2,18,238,0.12)) drop-shadow(0 2px 8px rgba(0,0,0,0.08));
+  animation: ${fadeSlideUp} 0.55s ease 0.6s both;
+`;
 
-  ${mq.sm} {
-    flex: 1;
-    max-width: 240px;
-  }
+const CardPreviewInner = styled.div`
+  width: 1080px;
+  height: 1080px;
+  transform: scale(${300 / 1080});
+  transform-origin: top left;
+  pointer-events: none;
 `;
 
 interface LangCardProps {
   data: LoveLanguageData;
   isPrimary: boolean;
-  tipsLabel: string;
   primaryBadge: string;
   secondaryBadge: string;
-  animationDelay: number;
 }
 
 function LangCard({
   data,
   isPrimary,
-  tipsLabel,
   primaryBadge,
   secondaryBadge,
 }: LangCardProps) {
@@ -502,21 +456,7 @@ function LangCard({
         <ShortDescription>{data.shortDescription}</ShortDescription>
 
         {isPrimary && (
-          <>
-            <Description>{data.description}</Description>
-
-            <TipsSeparator aria-hidden="true" />
-            <TipsLabel>{tipsLabel}</TipsLabel>
-
-            <TipsList>
-              {data.tips.map((tip, i) => (
-                <TipItem key={i} $delay={0.8 + i * 0.12}>
-                  <TipNumber aria-hidden="true">{i + 1}</TipNumber>
-                  <TipText>{tip}</TipText>
-                </TipItem>
-              ))}
-            </TipsList>
-          </>
+          <Description>{data.description}</Description>
         )}
       </CardInner>
     </LanguageCard>
@@ -529,10 +469,10 @@ export interface ResultScreenProps {
 }
 
 export function ResultScreen({ result, onRetake }: ResultScreenProps) {
-  const { t, tLang, language } = useLanguage();
+  const { t, tLang } = useLanguage();
 
+  const cardRef = useRef<HTMLDivElement>(null);
   const [barsAnimated, setBarsAnimated] = useState(false);
-  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => setBarsAnimated(true), 1100);
@@ -546,54 +486,6 @@ export function ResultScreen({ result, onRetake }: ResultScreenProps) {
     isSecondary: lang === result.secondary,
     data: tLang(lang),
   })).sort((a, b) => b.score - a.score);
-
-  const handleShare = async () => {
-    const primary = tLang(result.primary);
-    const secondary = result.secondary ? tLang(result.secondary) : null;
-
-    const text =
-      language === 'pt'
-        ? [
-            `Minha linguagem do amor primária é ${primary.name} ${primary.emoji}!`,
-            secondary
-              ? `Também muito presente: ${secondary.name} ${secondary.emoji}`
-              : '',
-            '',
-            'Descubra a sua — As Cinco Linguagens do Amor ❤️',
-          ]
-            .filter(Boolean)
-            .join('\n')
-        : [
-            `My primary love language is ${primary.name} ${primary.emoji}!`,
-            secondary
-              ? `Also strongly present: ${secondary.name} ${secondary.emoji}`
-              : '',
-            '',
-            'Discover yours — The Five Love Languages ❤️',
-          ]
-            .filter(Boolean)
-            .join('\n');
-
-    try {
-      await navigator.clipboard.writeText(text);
-    } catch {
-      // Fallback for browsers without clipboard API
-      const el = document.createElement('textarea');
-      el.value = text;
-      el.style.cssText = 'position:fixed;top:0;left:0;opacity:0;';
-      document.body.appendChild(el);
-      el.focus();
-      el.select();
-      try {
-        document.execCommand('copy');
-      } finally {
-        document.body.removeChild(el);
-      }
-    }
-
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2800);
-  };
 
   // ── Render ────────────────────────────────────────────────────────
   const primaryData = tLang(result.primary);
@@ -613,10 +505,8 @@ export function ResultScreen({ result, onRetake }: ResultScreenProps) {
         <LangCard
           data={primaryData}
           isPrimary
-          tipsLabel={t('ui.practicalTipsLabel')}
           primaryBadge={t('ui.primaryBadge')}
           secondaryBadge={t('ui.secondaryBadge')}
-          animationDelay={0.25}
         />
 
         {/* Secondary language card (conditional) */}
@@ -628,13 +518,14 @@ export function ResultScreen({ result, onRetake }: ResultScreenProps) {
             <LangCard
               data={secondaryData}
               isPrimary={false}
-              tipsLabel={t('ui.practicalTipsLabel')}
               primaryBadge={t('ui.primaryBadge')}
               secondaryBadge={t('ui.secondaryBadge')}
-              animationDelay={0.55}
             />
           </>
         )}
+
+        {/* Tips for me */}
+        <TipsForMe tips={primaryData.tipsForMe} />
 
         {/* Score Chart */}
         <ChartSection aria-label={t('ui.allScoresLabel')}>
@@ -677,27 +568,40 @@ export function ResultScreen({ result, onRetake }: ResultScreenProps) {
           </ChartRows>
         </ChartSection>
 
-        {/* Actions */}
-        <ActionsRow>
-          <ShareButton
-            $copied={copied}
-            onClick={handleShare}
-            aria-label={copied ? '✓ Copiado!' : t('ui.shareButton')}
-          >
-            {copied ? (language === 'pt' ? '✓ Copiado!' : '✓ Copied!') : `↑ ${t('ui.shareButton')}`}
-          </ShareButton>
+        {/* Partner guide divider + section */}
+        <SectionDivider aria-hidden="true">
+          <DividerText>{t('ui.partnerGuide_share_divider')}</DividerText>
+        </SectionDivider>
 
+        <PartnerGuide result={result} />
+
+        {/* Share card preview */}
+        <CardPreviewOuter aria-hidden="true">
+          <CardPreviewInner>
+            <ShareCard result={result} />
+          </CardPreviewInner>
+        </CardPreviewOuter>
+
+        {/* Share action buttons */}
+        <ShareButtonGroup result={result} cardRef={cardRef} />
+
+        {/* Retake */}
+        <ActionsRow>
           <Button
             variant="outline"
             size="md"
             onClick={onRetake}
             aria-label={t('ui.retakeButton')}
-            style={{ flex: 1, maxWidth: '240px' } as React.CSSProperties}
           >
             {t('ui.retakeButton')}
           </Button>
         </ActionsRow>
       </Inner>
+
+      {/* Hidden 1080x1080 card for html2canvas capture */}
+      <HiddenCapture aria-hidden="true">
+        <ShareCard ref={cardRef} result={result} />
+      </HiddenCapture>
     </Screen>
   );
 }

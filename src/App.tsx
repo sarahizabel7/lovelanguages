@@ -16,7 +16,7 @@ import { GlobalStyles } from './styles/GlobalStyles';
 import { LanguageProvider } from './contexts/LanguageContext';
 
 // Components
-import { LanguageToggle } from './components/LanguageToggle';
+import { Navbar } from './components/Navbar';
 import { WelcomeScreen } from './components/WelcomeScreen';
 import { QuestionCard } from './components/QuestionCard';
 import { ResultScreen } from './components/ResultScreen';
@@ -202,6 +202,11 @@ export default function App() {
 
   const handleRetake = useCallback(() => {
     clearState();
+    dispatch({ type: 'START' });
+  }, []);
+
+  const handleGoHome = useCallback(() => {
+    clearState();
     dispatch({ type: 'RESET' });
   }, []);
 
@@ -209,7 +214,7 @@ export default function App() {
     <LanguageProvider>
       <GlobalStyles />
 
-      <LanguageToggle position="fixed-top-right" />
+      <Navbar phase={state.phase} onHome={handleGoHome} />
 
       <TransitionWrapper key={state.phase}>
         {state.phase === 'welcome' && (

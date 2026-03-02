@@ -71,11 +71,13 @@ const sizeStyles: Record<ButtonSize, ReturnType<typeof css>> = {
 };
 
 const variantStyles: Record<ButtonVariant, ReturnType<typeof css>> = {
+  // filter: drop-shadow() instead of box-shadow — garantees border-radius
+  // is respected inside GPU compositing layers (transform ancestors).
   primary: css`
     background: ${colors.cobalt};
     color: ${colors.white};
     border: 2px solid ${colors.cobalt};
-    box-shadow: ${shadows.cobaltXs};
+    filter: drop-shadow(0 2px 8px rgba(2, 18, 238, 0.16));
 
     &::before {
       content: '';
@@ -91,7 +93,8 @@ const variantStyles: Record<ButtonVariant, ReturnType<typeof css>> = {
     &:hover:not(:disabled) {
       background: ${colors.cobaltDark};
       border-color: ${colors.cobaltDark};
-      box-shadow: ${shadows.cobalt};
+      filter: drop-shadow(0 8px 32px rgba(2, 18, 238, 0.28))
+              drop-shadow(0 4px 12px rgba(2, 18, 238, 0.16));
       transform: translateY(-3px);
 
       &::before {
@@ -101,7 +104,7 @@ const variantStyles: Record<ButtonVariant, ReturnType<typeof css>> = {
 
     &:active:not(:disabled) {
       transform: translateY(-1px);
-      box-shadow: ${shadows.cobaltXs};
+      filter: drop-shadow(0 2px 8px rgba(2, 18, 238, 0.16));
     }
   `,
 
@@ -109,7 +112,7 @@ const variantStyles: Record<ButtonVariant, ReturnType<typeof css>> = {
     background: ${colors.cherry};
     color: ${colors.white};
     border: 2px solid ${colors.cherry};
-    box-shadow: 0 3px 12px rgba(210, 0, 1, 0.18);
+    filter: drop-shadow(0 3px 12px rgba(210, 0, 1, 0.18));
 
     &::before {
       content: '';
@@ -123,13 +126,14 @@ const variantStyles: Record<ButtonVariant, ReturnType<typeof css>> = {
     &:hover:not(:disabled) {
       background: ${colors.cherryDark};
       border-color: ${colors.cherryDark};
-      box-shadow: ${shadows.cherry};
+      filter: drop-shadow(0 8px 32px rgba(210, 0, 1, 0.28))
+              drop-shadow(0 4px 12px rgba(210, 0, 1, 0.16));
       transform: translateY(-3px);
     }
 
     &:active:not(:disabled) {
       transform: translateY(-1px);
-      box-shadow: 0 2px 8px rgba(210, 0, 1, 0.18);
+      filter: drop-shadow(0 2px 8px rgba(210, 0, 1, 0.18));
     }
   `,
 
@@ -199,6 +203,7 @@ const StyledButton = styled.button<{
     background-color ${animation.transitions.normal},
     border-color ${animation.transitions.normal},
     box-shadow ${animation.transitions.slow},
+    filter ${animation.transitions.slow},
     transform ${animation.transitions.spring},
     color ${animation.transitions.fast},
     opacity ${animation.transitions.fast};

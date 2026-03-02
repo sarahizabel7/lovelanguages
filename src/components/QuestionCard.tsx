@@ -68,15 +68,15 @@ const Screen = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: ${spacing[5]} ${spacing[4]} ${spacing[10]};
+  padding: calc(${spacing[5]} + 56px) ${spacing[4]} ${spacing[10]};
   background: var(--color-bg);
 
   ${mq.sm} {
-    padding: ${spacing[8]} ${spacing[6]} ${spacing[12]};
+    padding: calc(${spacing[8]} + 56px) ${spacing[6]} ${spacing[12]};
   }
 
   ${mq.md} {
-    padding: ${spacing[10]} ${spacing[8]} ${spacing[16]};
+    padding: calc(${spacing[10]} + 56px) ${spacing[8]} ${spacing[16]};
   }
 `;
 
@@ -301,11 +301,12 @@ const OptionText = styled.p`
 `;
 
 const NavRow = styled.div`
+  width: 100%;
+  max-width: 600px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: ${spacing[3]};
-  margin-top: auto;
   padding-top: ${spacing[6]};
 `;
 
@@ -488,31 +489,31 @@ export function QuestionCard({
               );
             })}
           </OptionsGrid>
-
-          <NavRow>
-            <BackButton
-              $visible={displayedIndex > 0}
-              onClick={handlePrev}
-              aria-label={t('ui.prevButton')}
-              tabIndex={displayedIndex > 0 ? 0 : -1}
-            >
-              {t('ui.prevButton')}
-            </BackButton>
-
-            <NextWrapper $visible={!!displayedSelected}>
-              <Button
-                variant="primary"
-                size="md"
-                onClick={handleNext}
-                disabled={!displayedSelected}
-                aria-label={nextLabel}
-              >
-                {nextLabel} →
-              </Button>
-            </NextWrapper>
-          </NavRow>
         </Slide>
       </SlideContainer>
+
+      <NavRow>
+        <BackButton
+          $visible={displayedIndex > 0}
+          onClick={handlePrev}
+          aria-label={t('ui.prevButton')}
+          tabIndex={displayedIndex > 0 ? 0 : -1}
+        >
+          {t('ui.prevButton')}
+        </BackButton>
+
+        <NextWrapper $visible={!!displayedSelected}>
+          <Button
+            variant="primary"
+            size="md"
+            onClick={handleNext}
+            disabled={!displayedSelected}
+            aria-label={nextLabel}
+          >
+            {nextLabel} →
+          </Button>
+        </NextWrapper>
+      </NavRow>
     </Screen>
   );
 }

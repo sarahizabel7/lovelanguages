@@ -41,14 +41,14 @@ const Screen = styled.main`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: ${spacing[10]} ${spacing[5]} ${spacing[12]};
+  padding: calc(${spacing[10]} + 56px) ${spacing[5]} ${spacing[12]};
   background: ${gradients.heroBackground};
   background-attachment: fixed;
   overflow: hidden;
   animation: ${screenIn} 0.7s ${animation.easings.smooth} both;
 
   ${mq.md} {
-    padding: ${spacing[16]} ${spacing[8]};
+    padding: calc(${spacing[16]} + 56px) ${spacing[8]} ${spacing[16]};
   }
 `;
 
