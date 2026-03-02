@@ -2,7 +2,7 @@ import html2canvas from 'html2canvas';
 import type { RefObject } from 'react';
 import type { LoveLanguage } from '../../quiz';
 
-const APP_URL = 'lovequiz.app';
+const APP_URL = 'lovelanguages-liard.vercel.app';
 
 export { APP_URL };
 
