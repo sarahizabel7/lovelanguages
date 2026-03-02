@@ -13,6 +13,10 @@ export interface LoveLanguageData {
   tipsForMe: readonly [string, string, string, string];
   /** Tips for people who want to LOVE someone with this language — concrete partner behaviours */
   tipsForPartner: readonly [string, string, string, string];
+  /** 2-3 paragraph explanation of this language based on the book — used in the Learn screen */
+  learnDescription: string;
+  /** 3-4 practical everyday examples of how this language manifests */
+  learnExamples: readonly [string, string, string, string];
 }
 
 export interface UIStrings {
@@ -62,6 +66,14 @@ export interface UIStrings {
   partnerGuide_copied: string;
   partnerGuide_clipboard_intro: string;    // {{language}}
   partnerGuide_clipboard_footer: string;   // {{url}}
+
+  // ── Learn screen ────────────────────────────────────────────────
+  learnLink: string;
+  learnNavLink: string;
+  learnTitle: string;
+  learnSubtitle: string;
+  learnCta: string;
+  learnExamplesTitle: string;
 
   // ── Language toggle ──────────────────────────────────────────────
   languageToggleLabel: string;
@@ -139,6 +151,14 @@ const pt: Translations = {
     partnerGuide_clipboard_intro: '💕 Como me amar — {{language}}\n\nEu me sinto amado(a) quando:\n\n',
     partnerGuide_clipboard_footer: '\n\nDescubra sua linguagem em: {{url}}',
 
+    // Learn screen
+    learnLink: 'Conheça as 5 linguagens',
+    learnNavLink: 'Linguagens',
+    learnTitle: 'As Cinco Linguagens do Amor',
+    learnSubtitle: 'Segundo Gary Chapman, toda pessoa tem uma forma primária de dar e receber amor. Conhecer essas linguagens transforma a maneira como nos conectamos.',
+    learnCta: 'Descobrir a minha',
+    learnExamplesTitle: 'Como se manifesta',
+
     // Language toggle
     languageToggleLabel: 'Idioma',
     ptLabel: 'PT',
@@ -175,6 +195,14 @@ const pt: Translations = {
         'Envie uma mensagem de texto sem motivo, só para dizer que está pensando nela.',
         'Elogie essa pessoa na frente de outras — e deixe que ela ouça ou saiba.',
       ],
+      learnDescription:
+        'Gary Chapman descreve as Palavras de Afirmação como a linguagem de quem sente amor através do que é dito. Para essas pessoas, um elogio sincero não é apenas agradável — é vital. Palavras de encorajamento, reconhecimento e carinho funcionam como combustível emocional.\n\nChapman destaca que essa linguagem vai muito além de dizer "eu te amo". Ela inclui elogios específicos, expressões de gratidão, palavras de encorajamento em momentos difíceis e afirmações do valor da pessoa. O tom importa tanto quanto o conteúdo — palavras ditas com gentileza têm poder transformador.\n\nPor outro lado, palavras negativas, críticas destrutivas e o silêncio podem causar feridas profundas em quem fala essa linguagem. Uma única frase dura pode anular semanas de gestos positivos.',
+      learnExamples: [
+        'Elogios sinceros e específicos sobre caráter, aparência ou conquistas',
+        'Mensagens de texto ou bilhetes inesperados dizendo "pensei em você"',
+        'Palavras de encorajamento antes de um desafio ou momento difícil',
+        'Expressões públicas de admiração — elogiar a pessoa na frente de outros',
+      ],
     },
 
     ACTS: {
@@ -195,6 +223,14 @@ const pt: Translations = {
         'Resolva uma tarefa que essa pessoa tem adiado sem esperar ser pedido — e não mencione depois como se fosse um favor.',
         'Na semana mais difícil, assuma responsabilidades extras silenciosamente. Para ela, isso vale mais do que qualquer presente.',
         "Pergunte 'Como posso facilitar o seu dia hoje?' e cumpra o que for dito — ações concretas são a linguagem do amor dela.",
+      ],
+      learnDescription:
+        'Para Chapman, Atos de Serviço é a linguagem de quem entende amor através de ações concretas. Não se trata de servidão — se trata de alguém que escolhe voluntariamente investir tempo e energia para facilitar a vida de quem ama. Quando alguém cozinha o jantar, organiza a casa ou resolve um problema prático, a mensagem recebida é: "Você importa o suficiente para eu agir."\n\nO autor enfatiza que essa linguagem exige atenção e iniciativa. Não basta fazer quando pedido — o poder está na proatividade. Perceber que a pessoa está sobrecarregada e silenciosamente assumir uma tarefa comunica amor de forma profunda. Para quem fala essa linguagem, promessas não cumpridas e preguiça são especialmente dolorosas.\n\nChapman alerta que essa linguagem não deve ser confundida com expectativas ou cobranças. Atos de serviço genuínos nascem do desejo de servir, não da obrigação — e devem ser oferecidos com alegria, não com ressentimento.',
+      learnExamples: [
+        'Preparar uma refeição ou cuidar da casa sem precisar ser pedido',
+        'Resolver um problema prático que estava pesando na pessoa amada',
+        'Assumir tarefas extras quando o outro está sobrecarregado',
+        'Antecipar necessidades — abastecer o carro, organizar a mala, preparar o café',
       ],
     },
 
@@ -217,6 +253,14 @@ const pt: Translations = {
         'Marque datas importantes com uma lembrança física — a ausência de um gesto nessas ocasiões é sentida como descuido.',
         'Não espere uma ocasião especial — presenteie sem motivo. Para essa pessoa, o presente sem motivo é o mais significativo de todos.',
       ],
+      learnDescription:
+        'Chapman explica que Receber Presentes é a linguagem mais mal interpretada. Muitas pessoas a confundem com materialismo, mas o verdadeiro significado está no símbolo. Um presente é um lembrete físico e tangível de que alguém pensou em você — é amor que você pode ver e tocar. O valor financeiro é irrelevante; o que importa é a intenção por trás.\n\nO autor descreve que pessoas com essa linguagem se emocionam tanto com uma flor colhida no caminho quanto com um presente caro. O que as move é o pensamento: alguém parou o que estava fazendo, pensou em mim e trouxe algo que representa esse momento. A ausência de gestos em datas importantes, por outro lado, é sentida como esquecimento e descuido.\n\nChapman também destaca o "presente da presença" — estar fisicamente presente em momentos de crise é, para essas pessoas, o presente mais poderoso que existe. Não precisa trazer nada; sua presença é o presente.',
+      learnExamples: [
+        'Trazer algo de uma viagem que mostra que pensou na pessoa — um doce, um cartão postal',
+        'Lembrar de datas importantes com um gesto simbólico, mesmo que simples',
+        'Presentear sem motivo — a surpresa inesperada é a mais significativa',
+        'Guardar e valorizar presentes recebidos como símbolos tangíveis de amor',
+      ],
     },
 
     TIME: {
@@ -238,6 +282,14 @@ const pt: Translations = {
         'Crie um ritual semanal só para vocês dois — sem outros planos, sem telas. A consistência cria a segurança que essa pessoa precisa.',
         'Uma hora de presença total vale mais do que um dia inteiro de companhia distraída — qualidade sempre vence quantidade para ela.',
       ],
+      learnDescription:
+        'Chapman define Tempo de Qualidade como atenção total e indivisa. Não basta estar no mesmo cômodo — é preciso estar presente de verdade. Para quem fala essa linguagem, nada diz mais "eu te amo" do que alguém que escolhe desligar o mundo e dedicar seu recurso mais escasso: tempo com atenção plena.\n\nO autor diferencia claramente proximidade física de presença real. Assistir TV juntos no sofá, cada um no celular, não é tempo de qualidade. Mas uma caminhada de 20 minutos com conversa verdadeira é. O que define essa linguagem é a qualidade da atenção, não a quantidade de horas. Distrações constantes — checar o celular, olhar ao redor — são percebidas como rejeição.\n\nChapman propõe duas formas principais dessa linguagem: conversas de qualidade (ouvir com empatia, fazer perguntas, compartilhar sentimentos) e atividades de qualidade (fazer algo juntos com atenção mútua). Ambas exigem o mesmo ingrediente: presença genuína.',
+      learnExamples: [
+        'Refeições sem celular, com conversa e atenção plena um no outro',
+        'Passeios e atividades a dois sem pressa e sem distrações',
+        'Conversas profundas com escuta ativa — sem interromper ou oferecer soluções',
+        'Rituais semanais dedicados exclusivamente à conexão do casal',
+      ],
     },
 
     TOUCH: {
@@ -258,6 +310,14 @@ const pt: Translations = {
         'Toque os pequenos momentos do dia: mão no ombro ao passar, beijo ao sair de casa, pé encostado no sofá enquanto assistem TV.',
         'Nos momentos difíceis, não tente consertar nada com palavras — apenas segure essa pessoa. O contato físico é a linguagem do consolo dela.',
         'Um toque com atenção plena — olhar, pausar, tocar — comunica muito mais do que o mesmo gesto feito distraidamente.',
+      ],
+      learnDescription:
+        'Chapman descreve o Toque Físico como a linguagem mais instintiva e imediata. Desde a infância, o toque é a primeira forma de comunicação de amor — bebês que são segurados, acariciados e abraçados desenvolvem uma vida emocional mais saudável. Para adultos que falam essa linguagem, o toque continua sendo a forma mais direta de sentir conexão e segurança.\n\nO autor explica que essa linguagem não se limita ao contexto romântico ou sexual. Inclui todos os tipos de contato físico: um abraço de amigo, uma mão no ombro em momento difícil, sentar lado a lado com os joelhos se tocando, um aperto de mão caloroso. Cada toque intencional envia a mensagem: "Eu estou aqui, com você, agora."\n\nChapman alerta que, para quem tem essa linguagem primária, a ausência de toque é especialmente dolorosa — mais do que para outras pessoas. Distância física prolongada, rejeição de contato ou frieza corporal são interpretadas como rejeição emocional. O toque no momento certo de crise vale mais do que mil palavras de conforto.',
+      learnExamples: [
+        'Abraços longos e presentes ao chegar em casa ou se reencontrar',
+        'Toques cotidianos — mão no ombro, beijo de bom dia, pés encostados no sofá',
+        'Segurar a mão ou abraçar em momentos de dificuldade, sem precisar dizer nada',
+        'Proximidade física intencional — sentar perto, encostar, caminhar de braços dados',
       ],
     },
   },
@@ -318,6 +378,14 @@ const en: Translations = {
     partnerGuide_clipboard_intro: '💕 How to love me — {{language}}\n\nI feel loved when:\n\n',
     partnerGuide_clipboard_footer: '\n\nDiscover yours at: {{url}}',
 
+    // Learn screen
+    learnLink: 'Explore the 5 languages',
+    learnNavLink: 'Languages',
+    learnTitle: 'The Five Love Languages',
+    learnSubtitle: 'According to Gary Chapman, every person has a primary way of giving and receiving love. Understanding these languages transforms the way we connect.',
+    learnCta: 'Discover mine',
+    learnExamplesTitle: 'How it shows up',
+
     // Language toggle
     languageToggleLabel: 'Language',
     ptLabel: 'PT',
@@ -354,6 +422,14 @@ const en: Translations = {
         'Send a text for no reason — just to say you\'re thinking of them.',
         'Praise this person to others — and let them hear or know about it.',
       ],
+      learnDescription:
+        'Gary Chapman describes Words of Affirmation as the language of those who feel love through what is said. For these people, a sincere compliment is not merely pleasant — it is vital. Words of encouragement, recognition, and affection function as emotional fuel.\n\nChapman emphasises that this language goes far beyond saying "I love you." It includes specific compliments, expressions of gratitude, words of encouragement during tough times, and affirmations of a person\'s worth. Tone matters as much as content — words spoken with gentleness have transformative power.\n\nOn the other hand, negative words, destructive criticism, and silence can cause deep wounds in those who speak this language. A single harsh sentence can undo weeks of positive gestures.',
+      learnExamples: [
+        'Sincere, specific compliments about character, appearance, or achievements',
+        'Unexpected texts or handwritten notes saying "I was thinking of you"',
+        'Words of encouragement before a challenge or difficult moment',
+        'Public expressions of admiration — praising the person in front of others',
+      ],
     },
 
     ACTS: {
@@ -374,6 +450,14 @@ const en: Translations = {
         "Handle a task they've been putting off without waiting to be asked — and don't bring it up afterward as if it were a favour.",
         'During their hardest week, quietly take on extra responsibilities. For this person, that matters more than any gift.',
         "Ask 'How can I make your day easier today?' and follow through — concrete action is their love language.",
+      ],
+      learnDescription:
+        'For Chapman, Acts of Service is the language of those who understand love through concrete actions. It is not about servitude — it is about someone who voluntarily chooses to invest time and energy to make life easier for the one they love. When someone cooks dinner, tidies up, or solves a practical problem, the message received is: "You matter enough for me to act."\n\nThe author emphasises that this language requires attention and initiative. Doing something only when asked is not enough — the power lies in proactivity. Noticing that someone is overwhelmed and silently taking on a task communicates love profoundly. For those who speak this language, unfulfilled promises and laziness are especially painful.\n\nChapman warns that this language should not be confused with expectations or demands. Genuine acts of service are born from the desire to serve, not obligation — and they should be offered with joy, not resentment.',
+      learnExamples: [
+        'Preparing a meal or tidying the house without being asked',
+        'Solving a practical problem that was weighing on the person you love',
+        'Taking on extra tasks when the other person is overwhelmed',
+        'Anticipating needs — filling the car, packing a bag, making the coffee',
       ],
     },
 
@@ -396,6 +480,14 @@ const en: Translations = {
         'Mark important dates with a physical keepsake — the absence of a gesture on those occasions is felt as carelessness.',
         'Don\'t wait for a special occasion — give for no reason at all. For this person, the unreasoned gift is the most meaningful of all.',
       ],
+      learnDescription:
+        'Chapman explains that Receiving Gifts is the most misunderstood language. Many people confuse it with materialism, but the true meaning lies in the symbol. A gift is a physical, tangible reminder that someone thought of you — it is love you can see and touch. The financial value is irrelevant; what matters is the intention behind it.\n\nThe author describes how people with this language are moved as much by a flower picked along the way as by an expensive present. What stirs them is the thought: someone stopped what they were doing, thought of me, and brought something that represents that moment. The absence of gestures on important dates, however, is felt as forgetfulness and carelessness.\n\nChapman also highlights the "gift of presence" — being physically present during times of crisis is, for these people, the most powerful gift there is. You do not need to bring anything; your presence is the gift.',
+      learnExamples: [
+        'Bringing something from a trip that shows you thought of them — a treat, a postcard',
+        'Remembering important dates with a symbolic gesture, however simple',
+        'Giving for no reason — the unexpected surprise is the most meaningful',
+        'Keeping and treasuring received gifts as tangible symbols of love',
+      ],
     },
 
     TIME: {
@@ -417,6 +509,14 @@ const en: Translations = {
         'Create a weekly ritual just for the two of you — no other plans, no screens. Consistency builds the security this person needs.',
         'One hour of complete presence is worth more than a full day of distracted company — quality always beats quantity for them.',
       ],
+      learnDescription:
+        'Chapman defines Quality Time as total, undivided attention. Being in the same room is not enough — you need to be truly present. For those who speak this language, nothing says "I love you" more than someone who chooses to switch off the world and dedicate their scarcest resource: time with full attention.\n\nThe author clearly distinguishes physical proximity from real presence. Watching TV together on the couch, each on their phone, is not quality time. But a 20-minute walk with genuine conversation is. What defines this language is the quality of attention, not the number of hours. Constant distractions — checking the phone, looking around — are perceived as rejection.\n\nChapman proposes two main forms of this language: quality conversations (listening with empathy, asking questions, sharing feelings) and quality activities (doing something together with mutual attention). Both require the same ingredient: genuine presence.',
+      learnExamples: [
+        'Screen-free meals with real conversation and full attention on each other',
+        'Unhurried walks and activities for two, free from distractions',
+        'Deep conversations with active listening — no interrupting or jumping to solutions',
+        'Weekly rituals dedicated exclusively to the couple\'s connection',
+      ],
     },
 
     TOUCH: {
@@ -437,6 +537,14 @@ const en: Translations = {
         'Touch the small moments of the day: hand on the shoulder as you pass, a kiss goodbye, foot against theirs on the couch.',
         "In their difficult moments, don't try to fix anything with words — just hold them. Physical contact is their language of comfort.",
         'A touch with full attention — eye contact, pause, touch — communicates far more than the same gesture done distractedly.',
+      ],
+      learnDescription:
+        'Chapman describes Physical Touch as the most instinctive and immediate language. From infancy, touch is the first form of love communication — babies who are held, caressed, and hugged develop healthier emotional lives. For adults who speak this language, touch remains the most direct way to feel connection and security.\n\nThe author explains that this language is not limited to romantic or sexual contexts. It includes all types of physical contact: a hug from a friend, a hand on the shoulder during a hard time, sitting side by side with knees touching, a warm handshake. Every intentional touch sends the message: "I am here, with you, right now."\n\nChapman warns that for those with this primary language, the absence of touch is especially painful — more so than for other people. Prolonged physical distance, rejection of contact, or bodily coldness are interpreted as emotional rejection. A touch at the right moment of crisis is worth more than a thousand words of comfort.',
+      learnExamples: [
+        'Long, present hugs when arriving home or reuniting',
+        'Everyday touches — a hand on the shoulder, a good-morning kiss, feet touching on the couch',
+        'Holding hands or embracing during hard times, without needing to say anything',
+        'Intentional physical closeness — sitting near, leaning in, walking arm in arm',
       ],
     },
   },

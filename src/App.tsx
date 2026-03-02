@@ -18,12 +18,13 @@ import { LanguageProvider } from './contexts/LanguageContext';
 // Components
 import { Navbar } from './components/Navbar';
 import { WelcomeScreen } from './components/WelcomeScreen';
+import { LearnScreen } from './components/LearnScreen';
 import { QuestionCard } from './components/QuestionCard';
 import { ResultScreen } from './components/ResultScreen';
 
 import type { QuizResult } from './logic/calculateResult';
 
-type Phase = 'welcome' | 'quiz' | 'result';
+type Phase = 'welcome' | 'learn' | 'quiz' | 'result';
 
 interface QuizState {
   phase: Phase;
@@ -34,6 +35,7 @@ interface QuizState {
 
 type QuizAction =
   | { type: 'START' }
+  | { type: 'LEARN' }
   | { type: 'SELECT'; questionId: number; chosen: 'A' | 'B' }
   | { type: 'NEXT' }
   | { type: 'PREV' }
@@ -52,7 +54,7 @@ function loadState(): QuizState {
     const parsed = JSON.parse(raw) as Partial<QuizState>;
 
     if (
-      (parsed.phase === 'welcome' || parsed.phase === 'quiz' || parsed.phase === 'result') &&
+      (parsed.phase === 'welcome' || parsed.phase === 'learn' || parsed.phase === 'quiz' || parsed.phase === 'result') &&
       typeof parsed.currentQuestion === 'number' &&
       Array.isArray(parsed.answers)
     ) {
@@ -88,6 +90,9 @@ function quizReducer(state: QuizState, action: QuizAction): QuizState {
   switch (action.type) {
     case 'START':
       return { phase: 'quiz', currentQuestion: 0, answers: [] };
+
+    case 'LEARN':
+      return { ...state, phase: 'learn' };
 
     case 'SELECT': {
       const rest = state.answers.filter((a) => a.questionId !== action.questionId);
@@ -154,6 +159,8 @@ export default function App() {
         dispatch({ type: 'RESET' });
       } else if (state.phase === 'quiz') {
         dispatch({ type: 'RESET' });
+      } else if (state.phase === 'learn') {
+        dispatch({ type: 'RESET' });
       }
       window.history.pushState({ phase: state.phase }, '');
     };
@@ -205,6 +212,10 @@ export default function App() {
     dispatch({ type: 'START' });
   }, []);
 
+  const handleLearn = useCallback(() => {
+    dispatch({ type: 'LEARN' });
+  }, []);
+
   const handleGoHome = useCallback(() => {
     clearState();
     dispatch({ type: 'RESET' });
@@ -214,11 +225,15 @@ export default function App() {
     <LanguageProvider>
       <GlobalStyles />
 
-      <Navbar phase={state.phase} onHome={handleGoHome} />
+      <Navbar phase={state.phase} onHome={handleGoHome} onLearn={handleLearn} />
 
       <TransitionWrapper key={state.phase}>
         {state.phase === 'welcome' && (
-          <WelcomeScreen onStart={handleStart} />
+          <WelcomeScreen onStart={handleStart} onLearn={handleLearn} />
+        )}
+
+        {state.phase === 'learn' && (
+          <LearnScreen onStart={handleStart} />
         )}
 
         {state.phase === 'quiz' && currentQ && (

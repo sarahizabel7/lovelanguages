@@ -246,11 +246,43 @@ function splitHeroTitle(title: string) {
   return { prefix, accent: accentWords };
 }
 
+const LearnLink = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: ${typography.fonts.body};
+  font-size: ${typography.sizes.sm};
+  font-weight: ${typography.weights.medium};
+  color: ${colors.cobalt};
+  display: inline-flex;
+  align-items: center;
+  gap: ${spacing[1.5]};
+  padding: ${spacing[1]} 0;
+  letter-spacing: ${typography.letterSpacing.normal};
+  transition: opacity ${animation.transitions.fast};
+  animation: ${fadeUp} 0.5s ${animation.easings.smooth} 0.6s both;
+
+  &:hover {
+    opacity: 0.7;
+  }
+
+  &:focus-visible {
+    outline: 2px solid ${colors.cobalt};
+    outline-offset: 4px;
+    border-radius: 4px;
+  }
+
+  ${mq.sm} {
+    font-size: ${typography.sizes.base};
+  }
+`;
+
 export interface WelcomeScreenProps {
   onStart: () => void;
+  onLearn: () => void;
 }
 
-export function WelcomeScreen({ onStart }: WelcomeScreenProps) {
+export function WelcomeScreen({ onStart, onLearn }: WelcomeScreenProps) {
   const { t } = useLanguage();
   const { prefix, accent } = splitHeroTitle(t('ui.heroTitle'));
 
@@ -286,6 +318,10 @@ export function WelcomeScreen({ onStart }: WelcomeScreenProps) {
             {t('ui.startButton')}
           </Button>
         </ButtonWrapper>
+
+        <LearnLink onClick={onLearn}>
+          {t('ui.learnLink')} →
+        </LearnLink>
 
         <Credit>{t('ui.basedOn')}</Credit>
       </Content>

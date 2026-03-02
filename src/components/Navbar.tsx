@@ -6,11 +6,12 @@ import { animation, colors, mq, spacing, typography } from '../styles/theme';
 
 export const NAVBAR_H = 56;
 
-type Phase = 'welcome' | 'quiz' | 'result';
+type Phase = 'welcome' | 'learn' | 'quiz' | 'result';
 
 export interface NavbarProps {
   phase: Phase;
   onHome: () => void;
+  onLearn: () => void;
 }
 
 // ------------------------------------------------------------------
@@ -121,12 +122,78 @@ function SplitHeart() {
 }
 
 // ------------------------------------------------------------------
+// Learn link
+// ------------------------------------------------------------------
+
+const RightGroup = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${spacing[2]};
+
+  ${mq.sm} {
+    gap: ${spacing[3]};
+  }
+`;
+
+const LearnBtn = styled.button<{ $active: boolean }>`
+  display: inline-flex;
+  align-items: center;
+  gap: ${spacing[1.5]};
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: ${spacing[1]} ${spacing[2]};
+  border-radius: 8px;
+  font-family: ${typography.fonts.body};
+  font-size: ${typography.sizes['2xs']};
+  font-weight: ${typography.weights.medium};
+  letter-spacing: ${typography.letterSpacing.wide};
+  color: ${({ $active }) => ($active ? colors.cobalt : colors.textMuted)};
+  transition: color ${animation.transitions.fast}, background ${animation.transitions.fast};
+
+  &:hover {
+    color: ${colors.cobalt};
+    background: rgba(2, 18, 238, 0.04);
+  }
+
+  &:focus-visible {
+    outline: 2px solid ${colors.cobalt};
+    outline-offset: 2px;
+  }
+
+  svg {
+    flex-shrink: 0;
+  }
+
+  ${mq.sm} {
+    font-size: ${typography.sizes.xs};
+  }
+`;
+
+const LearnLabel = styled.span`
+  display: none;
+  ${mq.sm} {
+    display: inline;
+  }
+`;
+
+function BookIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+      <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+    </svg>
+  );
+}
+
+// ------------------------------------------------------------------
 // Component
 // ------------------------------------------------------------------
 
-export function Navbar({ phase, onHome }: NavbarProps) {
+export function Navbar({ phase, onHome, onLearn }: NavbarProps) {
   const { t } = useLanguage();
   const isHome = phase === 'welcome';
+  const isLearn = phase === 'learn';
 
   return (
     <Bar>
@@ -140,7 +207,18 @@ export function Navbar({ phase, onHome }: NavbarProps) {
         <LogoText>{t('ui.title')}</LogoText>
       </LogoBtn>
 
-      <LanguageToggle position="inline" />
+      <RightGroup>
+        <LearnBtn
+          $active={isLearn}
+          onClick={isLearn ? undefined : onLearn}
+          aria-label={t('ui.learnNavLink')}
+          aria-current={isLearn ? 'page' : undefined}
+        >
+          <BookIcon />
+          <LearnLabel>{t('ui.learnNavLink')}</LearnLabel>
+        </LearnBtn>
+        <LanguageToggle position="inline" />
+      </RightGroup>
     </Bar>
   );
 }
